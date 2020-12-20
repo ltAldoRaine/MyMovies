@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PromiseKit
 
 class MoviesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
@@ -28,11 +29,29 @@ class MoviesCollectionViewController: UICollectionViewController {
     private let moviesAPI = MoviesAPI()
 
     private var movies = [Movie]()
+    private var movieType: MovieType = .upcoming
+    private var promises = [(promise: Promise<[Movie]>, movieType: MovieType)]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MovieCollectionViewCell.nib, forCellWithReuseIdentifier: MovieCollectionViewCell.description)
-        getUpcomingMovies()
+        promises = [
+            (promise: moviesAPI.popular(), movieType: .popular),
+            (promise: moviesAPI.upcoming(), movieType: .upcoming),
+            (promise: moviesAPI.topRated(), movieType: .topRated)
+        ]
+        getMovies()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destination = segue.destination
+        switch destination {
+        case is MovieViewController:
+            let movieViewController = destination as! MovieViewController
+            movieViewController.movie = sender as? Movie
+        default:
+            return
+        }
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -49,13 +68,36 @@ class MoviesCollectionViewController: UICollectionViewController {
         if let posterPath = movie.posterPath, let url = URL(string: Network.moviePoster(posterPath)) {
             cell.posterImageView.kf.setImage(with: url)
         }
-        cell.title.text = movie.title
+        cell.titleLabel.text = movie.title
         return cell
     }
 
-    private func getUpcomingMovies() {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movie = movies[indexPath.row]
+        performSegue(withIdentifier: "MovieViewControllerSegue", sender: movie)
+    }
+
+    @IBAction func onPopularBarButtonItemTapped() {
+        movieType = .popular
+        title = movieType.description
+        getMovies()
+    }
+
+    @IBAction func onUpcomingBarButtonItemTapped() {
+        movieType = .upcoming
+        title = movieType.description
+        getMovies()
+    }
+
+    @IBAction func onTopRatedBarButtonItemTapped() {
+        movieType = .topRated
+        title = movieType.description
+        getMovies()
+    }
+
+    private func getMovies() {
         activityIndicatorView.startAnimating()
-        moviesAPI.upcoming()
+        promises.first { $0.movieType == movieType }?.promise
             .done { data -> Void in
                 self.activityIndicatorView.stopAnimating()
                 self.movies = data

@@ -10,7 +10,7 @@ import UIKit
 class MovieCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var posterImageView: UIImageView!
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
 
     static let description = "MovieCollectionViewCell"
     static let nib = UINib(nibName: description, bundle: nil)
@@ -22,7 +22,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         posterImageView.image = nil
-        title.text = nil
+        titleLabel.text = nil
     }
 
 }
