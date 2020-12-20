@@ -32,7 +32,7 @@ class MoviesCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MovieCollectionViewCell.nib, forCellWithReuseIdentifier: MovieCollectionViewCell.description)
-        getUpcommingMovies()
+        getUpcomingMovies()
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -53,7 +53,7 @@ class MoviesCollectionViewController: UICollectionViewController {
         return cell
     }
 
-    private func getUpcommingMovies() {
+    private func getUpcomingMovies() {
         activityIndicatorView.startAnimating()
         moviesAPI.upcoming()
             .done { data -> Void in
