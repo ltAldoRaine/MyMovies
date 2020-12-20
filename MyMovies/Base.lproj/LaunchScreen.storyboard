@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="pPq-vz-Q6e">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="59" width="414" height="803"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bBV-9s-INO">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
@@ -25,7 +25,7 @@
                                         </constraints>
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchScreenBackground" translatesAutoresizingMaskIntoConstraints="NO" id="sWW-3m-FYZ">
-                                        <rect key="frame" x="0.0" y="115" width="414" height="703"/>
+                                        <rect key="frame" x="0.0" y="115" width="414" height="688"/>
                                     </imageView>
                                 </subviews>
                             </stackView>
@@ -35,7 +35,7 @@
                         <constraints>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="pPq-vz-Q6e" secondAttribute="bottom" id="IWt-Q4-JVE"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="pPq-vz-Q6e" secondAttribute="trailing" id="VXI-Q6-XzB"/>
-                            <constraint firstItem="pPq-vz-Q6e" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cUC-So-U5p"/>
+                            <constraint firstItem="pPq-vz-Q6e" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="15" id="cUC-So-U5p"/>
                             <constraint firstItem="pPq-vz-Q6e" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="gax-Ae-cII"/>
                         </constraints>
                     </view>

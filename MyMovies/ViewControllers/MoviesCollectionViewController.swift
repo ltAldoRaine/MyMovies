@@ -7,6 +7,20 @@
 
 import UIKit
 
+class MoviesCollectionViewFlowLayout: UICollectionViewFlowLayout {
+
+    override func prepare() {
+        super.prepare()
+        guard let collectionView = collectionView else { return }
+        let wSpace: CGFloat = minimumInteritemSpacing + sectionInset.left + sectionInset.right
+        let hSpace: CGFloat = minimumLineSpacing + sectionInset.top + sectionInset.bottom
+        let width = (collectionView.frame.width - wSpace) / 2.0
+        let height = (collectionView.frame.height - hSpace) / 3.0
+        itemSize = CGSize(width: width, height: height)
+    }
+
+}
+
 class MoviesCollectionViewController: UICollectionViewController {
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
