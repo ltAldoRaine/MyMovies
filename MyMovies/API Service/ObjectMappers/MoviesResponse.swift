@@ -23,14 +23,16 @@ class MoviesResponse: Mappable {
 
 class Movie: Mappable {
 
-    var originalTitle: String?
+    var posterPath: String?
+    var title: String?
 
     required init?(map: Map) {
 
     }
 
     func mapping(map: Map) {
-        originalTitle <- map["original_title"]
+        posterPath <- map["poster_path"]
+        title <- map["title"]
     }
 
 }

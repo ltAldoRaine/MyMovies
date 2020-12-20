@@ -18,14 +18,7 @@ class MoviesCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MovieCollectionViewCell.nib, forCellWithReuseIdentifier: MovieCollectionViewCell.description)
-        activityIndicatorView.startAnimating()
-        moviesAPI.upcoming()
-            .done { data -> Void in
-                self.activityIndicatorView.stopAnimating()
-                self.movies = data
-                self.collectionView.reloadData()
-            }
-            .catch { error in print(error.localizedDescription) }
+        getUpcommingMovies()
     }
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -37,8 +30,24 @@ class MoviesCollectionViewController: UICollectionViewController {
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.description, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.description, for: indexPath) as! MovieCollectionViewCell
+        let movie = movies[indexPath.row]
+        if let posterPath = movie.posterPath, let url = URL(string: Network.moviePoster(posterPath)) {
+            cell.posterImageView.kf.setImage(with: url)
+        }
+        cell.title.text = movie.title
         return cell
+    }
+
+    private func getUpcommingMovies() {
+        activityIndicatorView.startAnimating()
+        moviesAPI.upcoming()
+            .done { data -> Void in
+                self.activityIndicatorView.stopAnimating()
+                self.movies = data
+                self.collectionView.reloadData()
+            }
+            .catch { error in print(error.localizedDescription) }
     }
 
 }
