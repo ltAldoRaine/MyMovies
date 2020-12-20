@@ -9,6 +9,8 @@ import UIKit
 
 class MoviesCollectionViewController: UICollectionViewController {
 
+    @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
+
     private let moviesAPI = MoviesAPI()
 
     private var movies = [Movie]()
@@ -16,8 +18,10 @@ class MoviesCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MovieCollectionViewCell.nib, forCellWithReuseIdentifier: MovieCollectionViewCell.description)
+        activityIndicatorView.startAnimating()
         moviesAPI.upcoming()
             .done { data -> Void in
+                self.activityIndicatorView.stopAnimating()
                 self.movies = data
                 self.collectionView.reloadData()
             }
