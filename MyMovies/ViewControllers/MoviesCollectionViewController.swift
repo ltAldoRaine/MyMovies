@@ -26,19 +26,17 @@ class MoviesCollectionViewController: UICollectionViewController {
 
     @IBOutlet weak var activityIndicatorView: UIActivityIndicatorView!
 
-    private let moviesAPI = MoviesAPI()
-
-    private var movies = [Movie]()
+    private var movies = [MovieViewModel]()
     private var movieType: MovieType = .upcoming
-    private var promises = [(promise: Promise<[Movie]>, movieType: MovieType)]()
+    private var promises = [(promise: Promise<[MovieViewModel]>, movieType: MovieType)]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MovieCollectionViewCell.nib, forCellWithReuseIdentifier: MovieCollectionViewCell.description)
         promises = [
-            (promise: moviesAPI.popular(), movieType: .popular),
-            (promise: moviesAPI.upcoming(), movieType: .upcoming),
-            (promise: moviesAPI.topRated(), movieType: .topRated)
+            (promise: MovieViewModel.popular(), movieType: .popular),
+            (promise: MovieViewModel.upcoming(), movieType: .upcoming),
+            (promise: MovieViewModel.topRated(), movieType: .topRated)
         ]
         getMovies()
     }
@@ -48,7 +46,7 @@ class MoviesCollectionViewController: UICollectionViewController {
         switch destination {
         case is MovieViewController:
             let movieViewController = destination as! MovieViewController
-            movieViewController.movie = sender as? Movie
+            movieViewController.movieViewModel = sender as? MovieViewModel
         default:
             return
         }
@@ -95,15 +93,26 @@ class MoviesCollectionViewController: UICollectionViewController {
         getMovies()
     }
 
+    @IBAction func onFavoritesBarButtonItemTapped() {
+        movieType = .favorites
+        title = movieType.description
+        getMovies()
+    }
+
     private func getMovies() {
-        activityIndicatorView.startAnimating()
-        promises.first { $0.movieType == movieType }?.promise
-            .done { data -> Void in
-                self.activityIndicatorView.stopAnimating()
-                self.movies = data
-                self.collectionView.reloadData()
-            }
-            .catch { error in print(error.localizedDescription) }
+        if movieType == .favorites {
+            movies.removeAll()
+            collectionView.reloadData()
+        } else {
+            activityIndicatorView.startAnimating()
+            promises.first { $0.movieType == movieType }?.promise
+                .done { data -> Void in
+                    self.activityIndicatorView.stopAnimating()
+                    self.movies = data
+                    self.collectionView.reloadData()
+                }
+                .catch { error in print(error.localizedDescription) }
+        }
     }
 
 }

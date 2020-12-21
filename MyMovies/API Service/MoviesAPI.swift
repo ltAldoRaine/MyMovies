@@ -11,7 +11,7 @@ import PromiseKit
 
 class MoviesAPI {
 
-    func upcoming() -> Promise<[Movie]> {
+    func upcoming() -> Promise<[MovieModel]> {
         return Promise { seal in
             let url = "\(Network.moviesApirUrl)/movie/upcoming?api_key=\(Network.moviesApiKey)&language=en-US&page=1"
             AF.request(url, method: .get, encoding: JSONEncoding.default)
@@ -30,7 +30,7 @@ class MoviesAPI {
         }
     }
 
-    func popular() -> Promise<[Movie]> {
+    func popular() -> Promise<[MovieModel]> {
         return Promise { seal in
             let url = "\(Network.moviesApirUrl)/movie/popular?api_key=\(Network.moviesApiKey)&language=en-US&page=1"
             AF.request(url, method: .get, encoding: JSONEncoding.default)
@@ -49,7 +49,7 @@ class MoviesAPI {
         }
     }
 
-    func topRated() -> Promise<[Movie]> {
+    func topRated() -> Promise<[MovieModel]> {
         return Promise { seal in
             let url = "\(Network.moviesApirUrl)/movie/top_rated?api_key=\(Network.moviesApiKey)&language=en-US&page=1"
             AF.request(url, method: .get, encoding: JSONEncoding.default)

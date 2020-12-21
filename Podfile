@@ -10,5 +10,6 @@ target 'MyMovies' do
   pod 'PromiseKit', '~> 6.13'
   pod 'Kingfisher', '~> 5.13'
   pod 'CoreStore', '~> 7.1'
-  
+  pod 'CDAlertView'
+
 end

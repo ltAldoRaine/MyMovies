@@ -12,6 +12,7 @@ enum MovieType: CustomStringConvertible {
     case popular
     case upcoming
     case topRated
+    case favorites
 
     var description: String {
         switch self {
@@ -21,6 +22,8 @@ enum MovieType: CustomStringConvertible {
             return "Upcoming"
         case .topRated:
             return "Top Rated"
+        case .favorites:
+            return "Favorites"
         }
     }
 

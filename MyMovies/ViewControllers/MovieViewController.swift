@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CDAlertView
 
 class MovieViewController: UIViewController {
 
@@ -15,25 +16,29 @@ class MovieViewController: UIViewController {
     @IBOutlet weak var originalTitleLabel: UILabel!
     @IBOutlet weak var overviewLabel: UILabel!
 
-    var movie: Movie?
+    var movieViewModel: MovieViewModel?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         fillUI()
     }
 
+    @IBAction func onAddToFavoritesViewTapped() {
+        CDAlertView(title: "Favorites", message: "Movie has been successfully added to the favorites", type: .success).show()
+    }
+
     private func fillUI() {
-        guard let movie = movie else { return }
-        title = movie.title
-        if let posterPath = movie.posterPath, let url = URL(string: Network.moviePoster(posterPath)) {
+        guard let movieViewModel = movieViewModel else { return }
+        title = movieViewModel.title
+        if let posterPath = movieViewModel.posterPath, let url = URL(string: Network.moviePoster(posterPath)) {
             posterImageView.kf.setImage(with: url)
         }
-        if let voteAverage = movie.voteAverage {
+        if let voteAverage = movieViewModel.voteAverage {
             ratingLabel.text = "\(voteAverage)"
         }
-        releaseDateLabel.text = movie.releaseDate?.toDate(format: "yyyy-MM-dd").toString(format: "MMM d, yyyy")
-        originalTitleLabel.text = movie.originalTitle
-        overviewLabel.text = movie.overview
+        releaseDateLabel.text = movieViewModel.releaseDate?.toDate(format: "yyyy-MM-dd").toString(format: "MMM d, yyyy")
+        originalTitleLabel.text = movieViewModel.originalTitle
+        overviewLabel.text = movieViewModel.overview
     }
 
 }
