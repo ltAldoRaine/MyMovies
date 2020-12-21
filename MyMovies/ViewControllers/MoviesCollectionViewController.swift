@@ -28,17 +28,10 @@ class MoviesCollectionViewController: UICollectionViewController {
 
     private var movies = [MovieViewModel]()
     private var movieType: MovieType = .upcoming
-    private var promises = [(promise: Promise<[MovieViewModel]>, movieType: MovieType)]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MovieCollectionViewCell.nib, forCellWithReuseIdentifier: MovieCollectionViewCell.description)
-        promises = [
-            (promise: MovieViewModel.popular(), movieType: .popular),
-            (promise: MovieViewModel.upcoming(), movieType: .upcoming),
-            (promise: MovieViewModel.topRated(), movieType: .topRated),
-            (promise: MovieViewModel.favorite(), movieType: .favorite)
-        ]
         getMovies()
     }
 
@@ -102,13 +95,22 @@ class MoviesCollectionViewController: UICollectionViewController {
 
     private func getMovies() {
         activityIndicatorView.startAnimating()
-        promises.first { $0.movieType == movieType }?.promise
-            .done { data -> Void in
-                self.activityIndicatorView.stopAnimating()
-                self.movies = data
-                self.collectionView.reloadData()
-            }
-            .catch { error in print(error.localizedDescription) }
+        let promise: Promise<[MovieViewModel]>
+        switch movieType {
+        case .popular:
+            promise = MovieViewModel.popular()
+        case .upcoming:
+            promise = MovieViewModel.upcoming()
+        case .topRated:
+            promise = MovieViewModel.topRated()
+        case .favorite:
+            promise = MovieViewModel.favorite()
+        }
+        promise.done { data -> Void in
+            self.activityIndicatorView.stopAnimating()
+            self.movies = data
+            self.collectionView.reloadData()
+        }.catch { error in print(error.localizedDescription) }
     }
 
 }
