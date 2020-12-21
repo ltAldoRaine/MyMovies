@@ -13,7 +13,7 @@ class MovieModel: Mappable {
 
     private static let moviesAPI = MoviesAPI()
 
-    var id: Int16?
+    var id: Int32?
     var originalTitle: String?
     var overview: String?
     var posterPath: String?
@@ -21,7 +21,7 @@ class MovieModel: Mappable {
     var title: String?
     var voteAverage: Int16?
 
-    init(id: Int16? = nil, originalTitle: String? = nil, overview: String? = nil, posterPath: String? = nil, releaseDate: String? = nil, title: String? = nil, voteAverage: Int16? = nil) {
+    init(id: Int32? = nil, originalTitle: String? = nil, overview: String? = nil, posterPath: String? = nil, releaseDate: String? = nil, title: String? = nil, voteAverage: Int16? = nil) {
         self.id = id
         self.originalTitle = originalTitle
         self.overview = overview
@@ -43,16 +43,6 @@ class MovieModel: Mappable {
 
     required init?(map: Map) {
 
-    }
-
-    static func allFavorites() -> [MovieModel]? {
-        do {
-            return try UIApplication.appDelegate.dataStack.fetchAll(From<FavoriteEntity>()).map { MovieModel(favoriteEntity: $0) }
-        }
-        catch {
-            print(error)
-        }
-        return nil
     }
 
     static func popular() -> Promise<[MovieModel]> {

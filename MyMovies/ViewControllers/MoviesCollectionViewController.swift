@@ -36,7 +36,8 @@ class MoviesCollectionViewController: UICollectionViewController {
         promises = [
             (promise: MovieViewModel.popular(), movieType: .popular),
             (promise: MovieViewModel.upcoming(), movieType: .upcoming),
-            (promise: MovieViewModel.topRated(), movieType: .topRated)
+            (promise: MovieViewModel.topRated(), movieType: .topRated),
+            (promise: MovieViewModel.favorite(), movieType: .favorite)
         ]
         getMovies()
     }
@@ -93,26 +94,21 @@ class MoviesCollectionViewController: UICollectionViewController {
         getMovies()
     }
 
-    @IBAction func onFavoritesBarButtonItemTapped() {
-        movieType = .favorites
+    @IBAction func onFavoriteBarButtonItemTapped() {
+        movieType = .favorite
         title = movieType.description
         getMovies()
     }
 
     private func getMovies() {
-        if movieType == .favorites {
-            movies.removeAll()
-            collectionView.reloadData()
-        } else {
-            activityIndicatorView.startAnimating()
-            promises.first { $0.movieType == movieType }?.promise
-                .done { data -> Void in
-                    self.activityIndicatorView.stopAnimating()
-                    self.movies = data
-                    self.collectionView.reloadData()
-                }
-                .catch { error in print(error.localizedDescription) }
-        }
+        activityIndicatorView.startAnimating()
+        promises.first { $0.movieType == movieType }?.promise
+            .done { data -> Void in
+                self.activityIndicatorView.stopAnimating()
+                self.movies = data
+                self.collectionView.reloadData()
+            }
+            .catch { error in print(error.localizedDescription) }
     }
 
 }
