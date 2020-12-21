@@ -104,7 +104,7 @@ class MovieModel: Mappable {
                     success?(MovieViewModel(movieModel: MovieModel(favoriteEntity: favoriteEntity)))
                 case .failure (let error):
                     failure?()
-                    print(error)
+                    print(error.localizedDescription)
                 }
             }
         )
@@ -122,7 +122,7 @@ class MovieModel: Mappable {
                     success?()
                 case .failure (let error):
                     failure?()
-                    print(error)
+                    print(error.localizedDescription)
                 }
             }
         )

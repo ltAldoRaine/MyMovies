@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             try dataStack.addStorageAndWait()
         }
         catch {
-            print(error)
+            print(error.localizedDescription)
         }
         return true
     }
