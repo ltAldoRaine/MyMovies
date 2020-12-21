@@ -60,7 +60,8 @@ class MovieModel: Mappable {
     static func favorite() -> Promise<[MovieModel]> {
         return Promise { seal in
             do {
-                let data = try UIApplication.appDelegate.dataStack.fetchAll(From<FavoriteEntity>()).map { MovieModel(favoriteEntity: $0) }
+                let data = try UIApplication.appDelegate.dataStack.fetchAll(From<FavoriteEntity>().orderBy(.descending(\.createdAt)))
+                    .map { MovieModel(favoriteEntity: $0) }
                 seal.fulfill(data)
             }
             catch (let error) {
@@ -91,6 +92,7 @@ class MovieModel: Mappable {
                 favoriteEntity?.posterPath = posterPath
                 favoriteEntity?.releaseDate = releaseDate
                 favoriteEntity?.title = title
+                favoriteEntity?.createdAt = Date()
                 if let voteAverage = voteAverage {
                     favoriteEntity?.voteAverage = voteAverage
                 }

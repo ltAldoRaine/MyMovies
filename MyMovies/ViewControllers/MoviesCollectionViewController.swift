@@ -7,6 +7,7 @@
 
 import UIKit
 import PromiseKit
+import CDAlertView
 
 class MoviesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
@@ -106,11 +107,15 @@ class MoviesCollectionViewController: UICollectionViewController {
         case .favorite:
             promise = MovieViewModel.favorite()
         }
-        promise.done { data -> Void in
+        promise.ensure {
             self.activityIndicatorView.stopAnimating()
+        }.done { data -> Void in
             self.movies = data
             self.collectionView.reloadData()
-        }.catch { error in print(error.localizedDescription) }
+        }.catch { error in
+            CDAlertView(title: "Warning", message: "There was problem, please try again later", type: .warning).show()
+            print(error.localizedDescription)
+        }
     }
 
 }
