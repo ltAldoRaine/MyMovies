@@ -11,7 +11,7 @@ class MovieViewModel {
 
     private let movieModel: MovieModel?
 
-    var id: Int16?
+    var id: Int32?
     var originalTitle: String?
     var overview: String?
     var posterPath: String?
@@ -42,16 +42,8 @@ class MovieViewModel {
         return MovieModel.topRated().map { $0.map { MovieViewModel(movieModel: $0) } }
     }
 
-    static func allFavorites() -> [MovieViewModel]? {
-        guard var all = MovieModel.allFavorites() else { return nil }
-        //sorty by release date
-        all.sort { (movieModel1, movieModel2) -> Bool in
-            if let date1 = movieModel1.releaseDate?.toDate(format: "yyyy-MM-dd"), let date2 = movieModel2.releaseDate?.toDate(format: "yyyy-MM-dd") {
-                return date1 > date2
-            }
-            return false
-        }
-        return all.map { MovieViewModel(movieModel: $0) }
+    static func favorite() -> Promise<[MovieViewModel]> {
+        return MovieModel.favorite().map { $0.map { MovieViewModel(movieModel: $0) } }
     }
 
     func createFavorite(success: ((_ movieViewModel: MovieViewModel?) -> Void)? = nil, failure: (() -> Void)? = nil) {

@@ -57,6 +57,18 @@ class MovieModel: Mappable {
         return moviesAPI.topRated()
     }
 
+    static func favorite() -> Promise<[MovieModel]> {
+        return Promise { seal in
+            do {
+                let data = try UIApplication.appDelegate.dataStack.fetchAll(From<FavoriteEntity>()).map { MovieModel(favoriteEntity: $0) }
+                seal.fulfill(data)
+            }
+            catch (let error) {
+                seal.reject(error)
+            }
+        }
+    }
+
     func mapping(map: Map) {
         id <- map["id"]
         originalTitle <- map["original_title"]
