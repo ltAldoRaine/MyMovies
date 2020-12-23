@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3D1DC063258FECB100B6B117 /* MovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D1DC062258FECB100B6B117 /* MovieViewModel.swift */; };
+		3D34B21525935BA40097EE91 /* DataError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D34B21425935BA40097EE91 /* DataError.swift */; };
 		3D6646FA258F971100FA906E /* MoviesAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6646F9258F971100FA906E /* MoviesAPI.swift */; };
 		3D664727258F9BFF00FA906E /* MoviesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D664726258F9BFF00FA906E /* MoviesResponse.swift */; };
 		3D6D0698258E6D7D00C53B76 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6D0697258E6D7D00C53B76 /* MovieCollectionViewCell.swift */; };
@@ -51,6 +52,7 @@
 
 /* Begin PBXFileReference section */
 		3D1DC062258FECB100B6B117 /* MovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieViewModel.swift; sourceTree = "<group>"; };
+		3D34B21425935BA40097EE91 /* DataError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataError.swift; sourceTree = "<group>"; };
 		3D6646F9258F971100FA906E /* MoviesAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesAPI.swift; sourceTree = "<group>"; };
 		3D664726258F9BFF00FA906E /* MoviesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesResponse.swift; sourceTree = "<group>"; };
 		3D6D0697258E6D7D00C53B76 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			children = (
 				3D6D06B0258E734800C53B76 /* Network.swift */,
 				3D9E99C9258FD42900E74B93 /* MovieType.swift */,
+				3D34B21425935BA40097EE91 /* DataError.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 				3D9E99B8258FBB4D00E74B93 /* UIViewExtension.swift in Sources */,
 				3D9E99C5258FD03300E74B93 /* DateExtension.swift in Sources */,
 				3D903221258E5ECE004EA32A /* AppDelegate.swift in Sources */,
+				3D34B21525935BA40097EE91 /* DataError.swift in Sources */,
 				3D6D0698258E6D7D00C53B76 /* MovieCollectionViewCell.swift in Sources */,
 				3D664727258F9BFF00FA906E /* MoviesResponse.swift in Sources */,
 				3D6D06A3258E6DE300C53B76 /* MoviesCollectionViewController.swift in Sources */,
