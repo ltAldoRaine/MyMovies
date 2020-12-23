@@ -9,7 +9,7 @@ import PromiseKit
 
 class MovieViewModel {
 
-    private let movieModel: MovieModel?
+    private let movieModel: MovieModel
 
     var id: Int32?
     var originalTitle: String?
@@ -46,12 +46,12 @@ class MovieViewModel {
         return MovieModel.favorite().map { $0.map { MovieViewModel(movieModel: $0) } }
     }
 
-    func createFavorite(success: ((_ movieViewModel: MovieViewModel?) -> Void)? = nil, failure: (() -> Void)? = nil) {
-        movieModel?.createFavorite(success: success, failure: failure)
+    func createFavorite() -> Promise<MovieViewModel> {
+        return movieModel.createFavorite().map { MovieViewModel(movieModel: $0)}
     }
 
-    func deleteFavorite(success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
-        movieModel?.deleteFavorite(success: success, failure: failure)
+    func deleteFavorite() -> Promise<Void> {
+        return movieModel.deleteFavorite()
     }
 
 }

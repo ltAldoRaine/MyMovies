@@ -24,12 +24,12 @@ class MovieViewController: UIViewController {
     }
 
     @IBAction func onAddToFavoriteViewTapped() {
-        movieViewModel?.createFavorite(success: { _ in
+        movieViewModel?.createFavorite()
+        .done { _ in
             CDAlertView(title: "Favorite", message: "Movie has been successfully added to the favorites", type: .success).show()
-        }, failure: {
-                CDAlertView(title: "Favorite", message: "There was problem, when adding movie to the favorites", type: .error).show()
-            }
-        )
+        }.catch { _ in
+            CDAlertView(title: "Favorite", message: "There was problem, when adding movie to the favorites", type: .error).show()
+        }
     }
 
     private func fillUI() {

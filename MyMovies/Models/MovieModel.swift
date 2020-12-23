@@ -80,53 +80,62 @@ class MovieModel: Mappable {
         voteAverage <- map["vote_average"]
     }
 
-    func createFavorite(success: ((_ movieViewModel: MovieViewModel?) -> Void)? = nil, failure: (() -> Void)? = nil) {
-        var favoriteEntity: FavoriteEntity?
-        UIApplication.appDelegate.dataStack.perform(
-            asynchronous: { [self] (transaction) -> Void in
-                guard let id = id else { return }
-                favoriteEntity = transaction.create(Into<FavoriteEntity>())
-                favoriteEntity?.id = id
-                favoriteEntity?.originalTitle = originalTitle
-                favoriteEntity?.overview = overview
-                favoriteEntity?.posterPath = posterPath
-                favoriteEntity?.releaseDate = releaseDate
-                favoriteEntity?.title = title
-                favoriteEntity?.createdAt = Date()
-                if let voteAverage = voteAverage {
-                    favoriteEntity?.voteAverage = voteAverage
+    func createFavorite() -> Promise<MovieModel> {
+        return Promise { seal in
+            var favoriteEntity: FavoriteEntity?
+            UIApplication.appDelegate.dataStack.perform(
+                asynchronous: { [self] (transaction) -> Void in
+                    if let id = id  {
+                        favoriteEntity = transaction.create(Into<FavoriteEntity>())
+                        favoriteEntity?.id = id
+                        favoriteEntity?.originalTitle = originalTitle
+                        favoriteEntity?.overview = overview
+                        favoriteEntity?.posterPath = posterPath
+                        favoriteEntity?.releaseDate = releaseDate
+                        favoriteEntity?.title = title
+                        favoriteEntity?.createdAt = Date()
+                        if let voteAverage = voteAverage {
+                            favoriteEntity?.voteAverage = voteAverage
+                        }
+                    }
+                },
+                completion: { (result) -> Void in
+                    switch result {
+                    case .success:
+                        if let favoriteEntity = favoriteEntity {
+                            seal.fulfill(MovieModel(favoriteEntity: favoriteEntity))
+                        }
+                    case .failure (let error):
+                        seal.reject(error)
+                    }
                 }
-            },
-            completion: { (result) -> Void in
-                switch result {
-                case .success:
-                    guard let favoriteEntity = favoriteEntity else { return }
-                    success?(MovieViewModel(movieModel: MovieModel(favoriteEntity: favoriteEntity)))
-                case .failure (let error):
-                    failure?()
-                    print(error.localizedDescription)
-                }
-            }
-        )
+            )
+        }
     }
 
-    func deleteFavorite(success: (() -> Void)? = nil, failure: (() -> Void)? = nil) {
-        UIApplication.appDelegate.dataStack.perform(
-            asynchronous: { [self] (transaction) -> Void in
-                guard let id = id else { return }
-                try transaction.deleteAll(From<FavoriteEntity>().where(\.id == id))
-            },
-            completion: { (result) -> Void in
-                switch result {
-                case .success:
-                    success?()
-                case .failure (let error):
-                    failure?()
-                    print(error.localizedDescription)
+    func deleteFavorite() -> Promise<Void> {
+        return Promise { seal in
+            UIApplication.appDelegate.dataStack.perform(
+                asynchronous: { [self] (transaction) -> Void in
+                    do {
+                        if let id = id {
+                            try transaction.deleteAll(From<FavoriteEntity>().where(\.id == id))
+                            seal.fulfill_()
+                        }
+                    } catch (let error) {
+                        seal.reject(error)
+                    }
+                },
+                completion: { (result) -> Void in
+                    switch result {
+                    case .success:
+                        seal.fulfill_()
+                    case .failure (let error):
+                        seal.reject(error)
+                    }
                 }
-            }
-        )
-
+            )
+        }
     }
 
 }
